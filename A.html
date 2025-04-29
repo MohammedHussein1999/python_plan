@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة تعلم Python - 40 حصة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: {
+                            100: '#1E293B',
+                            200: '#334155',
+                            300: '#475569',
+                            400: '#64748B',
+                            500: '#94A3B8',
+                        }
+                    },
+                    fontFamily: {
+                        'tajawal': ['Tajawal', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .session-card {
+            transition: all 0.3s ease;
+        }
+        
+        .session-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e2e8f0;
+        }
+        
+        .dark .progress-bar {
+            background-color: #2d3748;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #4299e1;
+            transition: width 0.5s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .dark ::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+        
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        
+        /* Dark mode toggle animation */
+        .dark-mode-toggle {
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Animation classes */
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .animate-fade-out {
+            animation: fadeOut 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(10px); }
+        }
+        
+        /* Type colors */
+        .type-theory {
+            background-color: #DBEAFE;
+            color: #1D4ED8;
+        }
+        .dark .type-theory {
+            background-color: #1E3A8A;
+            color: #93C5FD;
+        }
+        
+        .type-practice {
+            background-color: #D1FAE5;
+            color: #047857;
+        }
+        .dark .type-practice {
+            background-color: #064E3B;
+            color: #6EE7B7;
+        }
+        
+        .type-project {
+            background-color: #EDE9FE;
+            color: #5B21B6;
+        }
+        .dark .type-project {
+            background-color: #5B21B6;
+            color: #C4B5FD;
+        }
+        
+        .type-review {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+        .dark .type-review {
+            background-color: #78350F;
+            color: #FCD34D;
+        }
+        
+        .type-workshop {
+            background-color: #FCE7F3;
+            color: #BE185D;
+        }
+        .dark .type-workshop {
+            background-color: #831843;
+            color: #F9A8D4;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-dark-100 dark:text-gray-200">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-8 text-center relative">
+            <div class="absolute left-0 top-0">
+                <button id="dark-mode-toggle" class="dark-mode-toggle p-2 rounded-full bg-gray-200 dark:bg-dark-200 text-gray-700 dark:text-gray-300">
+                    <i id="dark-mode-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-primary mb-2">خطة تعلم Python</h1>
+            <p class="text-gray-600 dark:text-gray-400">40 حصة من المبتدئ إلى الاحتراف</p>
+            
+            <!-- Progress bar -->
+            <div class="mt-6 max-w-2xl mx-auto">
+                <div class="flex justify-between mb-2">
+                    <span class="text-sm font-medium">إجمالي الحصص</span>
+                    <span class="text-sm font-medium"><span id="completed-count">0</span>/40 مكتملة</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Filter and search -->
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="relative w-full md:w-64">
+                <input type="text" id="search-input" placeholder="ابحث عن حصة..." class="w-full pr-10 pl-4 py-2 border border-gray-300 dark:border-dark-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white dark:bg-dark-200 dark:text-gray-200">
+                <i class="fas fa-search absolute right-3 top-3 text-gray-400 dark:text-gray-500"></i>
+            </div>
+            
+            <div class="flex gap-2 w-full md:w-auto">
+                <select id="type-filter" class="px-4 py-2 border border-gray-300 dark:border-dark-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white dark:bg-dark-200 dark:text-gray-200">
+                    <option value="all">جميع الأنواع</option>
+                    <option value="theory">نظري</option>
+                    <option value="practice">تطبيق</option>
+                    <option value="project">مشروع</option>
+                    <option value="review">مراجعة</option>
+                    <option value="workshop">ورشة عمل</option>
+                </select>
+                
+                <select id="week-filter" class="px-4 py-2 border border-gray-300 dark:border-dark-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white dark:bg-dark-200 dark:text-gray-200">
+                    <option disabled selected value="all">جميع الأسابيع</option>
+                    <option value="1">الأسبوع 1</option>
+                    <option value="2">الأسبوع 2</option>
+                    <option value="3">الأسبوع 3</option>
+                    <option value="4">الأسبوع 4</option>
+                    <option value="5">الأسبوع 5</option>
+                    <option value="6">الأسبوع 6</option>
+                    <option value="7">الأسبوع 7</option>
+                    <option value="8">الأسبوع 8</option>
+                    <option value="9">الأسبوع 9</option>
+                    <option value="10">الأسبوع 10</option>
+                </select>
+                
+                <select id="status-filter" class="px-4 py-2 border border-gray-300 dark:border-dark-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white dark:bg-dark-200 dark:text-gray-200">
+                    <option value="all">جميع الحالات</option>
+                    <option value="completed">مكتملة</option>
+                    <option value="incomplete">غير مكتملة</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Sessions grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="sessions-container">
+            <!-- Sessions will be added here by JavaScript -->
+        </div>
+        
+        <!-- Stats footer -->
+        <footer class="mt-12 bg-white dark:bg-dark-200 rounded-xl shadow-sm dark:shadow-none p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-blue-100 dark:bg-blue-800 p-3 rounded-full">
+                            <i class="fas fa-book text-blue-600 dark:text-blue-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">إجمالي الحصص</p>
+                            <p class="text-2xl font-bold text-blue-600 dark:text-blue-300">40</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg border border-green-100 dark:border-green-900/50">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-green-100 dark:bg-green-800 p-3 rounded-full">
+                            <i class="fas fa-check-circle text-green-600 dark:text-green-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">الحصص المكتملة</p>
+                            <p class="text-2xl font-bold text-green-600 dark:text-green-300"><span id="stats-completed">0</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 dark:bg-yellow-900/30 p-4 rounded-lg border border-yellow-100 dark:border-yellow-900/50">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-yellow-100 dark:bg-yellow-800 p-3 rounded-full">
+                            <i class="fas fa-clock text-yellow-600 dark:text-yellow-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">الحصص المتبقية</p>
+                            <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-300"><span id="stats-remaining">40</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border border-purple-100 dark:border-purple-900/50">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-purple-100 dark:bg-purple-800 p-3 rounded-full">
+                            <i class="fas fa-project-diagram text-purple-600 dark:text-purple-300 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">عدد المشاريع</p>
+                            <p class="text-2xl font-bold text-purple-600 dark:text-purple-300">5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tips section -->
+            <div class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-lg border border-blue-100 dark:border-blue-900/50">
+                <h3 class="text-xl font-bold text-blue-600 dark:text-blue-300 mb-4">🎯 نصائح للنجاح:</h3>
+                <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-500 dark:text-green-400 mt-1">✅</span>
+                        <span>ركز على التطبيق العملي أكثر من الحفظ</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-500 dark:text-green-400 mt-1">✅</span>
+                        <span>حاول تعديل الأكواد وتجربة أشياء جديدة</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-500 dark:text-green-400 mt-1">✅</span>
+                        <span>استخدم GitHub لحفظ مشاريعك ومشاركتها</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-green-500 dark:text-green-400 mt-1">✅</span>
+                        <span>ابدأ بالمشاريع الصغيرة ثم تدرج إلى الأكبر</span>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dark mode toggle functionality
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const darkModeIcon = document.getElementById('dark-mode-icon');
+            
+            // Check for saved user preference or use system preference
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            const currentTheme = localStorage.getItem('theme');
+            
+            if (currentTheme === 'dark' || (!currentTheme && prefersDarkScheme.matches)) {
+                document.documentElement.classList.add('dark');
+                darkModeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+            
+            darkModeToggle.addEventListener('click', function() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                
+                if (isDark) {
+                    darkModeIcon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    darkModeIcon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
+            
+            // Sessions data
+            const sessionsData = [
+                { week: 1, number: 1, title: "مقدمة إلى Python وتثبيت الأدوات", type: "theory", desc: "تعريف Python ومجالات استخدامها، تثبيت Python وبيئة التطوير (VS Code/PyCharm)، كتابة وتنفيذ أول برنامج (Hello World!)", icon: "fa-python", completed: false },
+                { week: 1, number: 2, title: "المتغيرات وأنواع البيانات الأساسية", type: "theory", desc: "تعريف المتغيرات (Variables)، أنواع البيانات (int, float, str, bool)، التحويل بين الأنواع (Type Casting)", icon: "fa-code", completed: false },
+                { week: 1, number: 3, title: "العمليات الحسابية والمنطقية", type: "practice", desc: "العمليات الحسابية (+, -, *, /, %, **)، العمليات المنطقية (and, or, not)، عمليات المقارنة (==, !=, >, <)", icon: "fa-calculator", completed: false },
+                { week: 1, number: 4, title: "التعامل مع النصوص (Strings)", type: "practice", desc: "تعريف النصوص والتنسيق (f-strings)، دوال النصوص (upper(), split(), replace())، التقطيع والفهرسة (Slicing & Indexing)", icon: "fa-font", completed: false },
+                
+                { week: 2, number: 5, title: "القوائم (Lists) والعمليات الأساسية", type: "practice", desc: "إنشاء القوائم والتعديل عليها، دوال القوائم (append(), remove(), sort())، التقطيع والفهرسة", icon: "fa-list-ol", completed: false },
+                { week: 2, number: 6, title: "Tuples و Sets", type: "theory", desc: "الفرق بين Lists و Tuples، إنشاء وتعديل Sets، عمليات المجموعات (Union, Intersection)", icon: "fa-braille", completed: false },
+                { week: 2, number: 7, title: "القواميس (Dictionaries)", type: "practice", desc: "إنشاء القواميس والوصول للقيم، دوال القواميس (keys(), values(), items())", icon: "fa-book", completed: false },
+                { week: 2, number: 8, title: "الجمل الشرطية (if-elif-else)", type: "practice", desc: "استخدام if مع المقارنات، أمثلة تطبيقية (تحديد الأكبر، تقييم الدرجات)", icon: "fa-code-branch", completed: false },
+                
+                { week: 3, number: 9, title: "الحلقات (Loops) - while", type: "practice", desc: "استخدام while مع break و continue، أمثلة عملية (حساب المجاميع)", icon: "fa-redo", completed: false },
+                { week: 3, number: 10, title: "الحلقات (Loops) - for", type: "practice", desc: "استخدام for مع range()، التكرار على القوائم والقواميس", icon: "fa-sync", completed: false },
+                { week: 3, number: 11, title: "الدوال (Functions) - الأساسيات", type: "theory", desc: "تعريف واستدعاء الدوال، المعاملات والقيم الراجعة (return)", icon: "fa-function", completed: false },
+                { week: 3, number: 12, title: "الدوال المتقدمة (Lambda, *args, **kwargs)", type: "theory", desc: "الدوال المجهولة (Lambda)، استخدام *args و **kwargs", icon: "fa-function", completed: false },
+                
+                { week: 4, number: 13, title: "معالجة الأخطاء (Try-Except)", type: "practice", desc: "أنواع الأخطاء (ValueError, TypeError)، استخدام try-except-finally", icon: "fa-bug", completed: false },
+                { week: 4, number: 14, title: "المشروع الأول - آلة حاسبة", type: "project", desc: "بناء آلة حاسبة باستخدام الدوال والشروط", icon: "fa-calculator", completed: false },
+                { week: 4, number: 15, title: "التعامل مع الملفات (File Handling)", type: "practice", desc: "قراءة وكتابة الملفات (open, read, write)", icon: "fa-file-alt", completed: false },
+                { week: 4, number: 16, title: "البرمجة الشيئية (OOP) - الأساسيات", type: "theory", desc: "تعريف الكلاسات والكائنات، init و self", icon: "fa-cube", completed: false },
+                
+                { week: 5, number: 17, title: "البرمجة الشيئية (OOP) - الوراثة", type: "theory", desc: "مفهوم الوراثة (Inheritance)، استخدام super()", icon: "fa-cubes", completed: false },
+                { week: 5, number: 18, title: "الوحدات والمكتبات (Modules & Libraries)", type: "practice", desc: "إنشاء واستيراد الوحدات، استخدام مكتبات (math, random)", icon: "fa-box-open", completed: false },
+                { week: 5, number: 19, title: "العمل مع API و requests", type: "practice", desc: "إرسال طلبات HTTP (requests.get())، تحليل JSON", icon: "fa-globe", completed: false },
+                { week: 5, number: 20, title: "قواعد البيانات (SQLite)", type: "practice", desc: "إنشاء قاعدة بيانات، إدراج واستعلام البيانات", icon: "fa-database", completed: false },
+                
+                { week: 6, number: 21, title: "المشروع الثاني - نظام إدارة مهام (الجزء 1)", type: "project", desc: "بناء نظام To-Do List باستخدام القوائم والملفات", icon: "fa-tasks", completed: false },
+                { week: 6, number: 22, title: "المشروع الثاني - نظام إدارة مهام (الجزء 2)", type: "project", desc: "إكمال نظام To-Do List وإضافة ميزات جديدة", icon: "fa-tasks", completed: false },
+                { week: 6, number: 23, title: "الخوارزميات (Sorting) - Bubble Sort", type: "workshop", desc: "تعلم وتطبيق خوارزمية Bubble Sort", icon: "fa-sort", completed: false },
+                { week: 6, number: 24, title: "الخوارزميات (Searching) - Binary Search", type: "workshop", desc: "تعلم وتطبيق خوارزمية Binary Search", icon: "fa-search", completed: false },
+                
+                { week: 7, number: 25, title: "تطوير الويب (Flask Basics) - الجزء 1", type: "practice", desc: "إنشاء موقع بسيط باستخدام Flask", icon: "fa-server", completed: false },
+                { week: 7, number: 26, title: "تطوير الويب (Flask Basics) - الجزء 2", type: "practice", desc: "Routing وعرض القوالب في Flask", icon: "fa-route", completed: false },
+                { week: 7, number: 27, title: "الـ Threading والبرمجة المتوازية - الجزء 1", type: "theory", desc: "أساسيات threading في Python", icon: "fa-random", completed: false },
+                { week: 7, number: 28, title: "الـ Threading والبرمجة المتوازية - الجزء 2", type: "practice", desc: "أمثلة عملية على threading", icon: "fa-random", completed: false },
+                
+                { week: 8, number: 29, title: "التعلم الآلي (Machine Learning Intro) - الجزء 1", type: "theory", desc: "مقدمة إلى pandas و numpy", icon: "fa-brain", completed: false },
+                { week: 8, number: 30, title: "التعلم الآلي (Machine Learning Intro) - الجزء 2", type: "practice", desc: "بناء نموذج تنبؤ بسيط", icon: "fa-chart-line", completed: false },
+                { week: 8, number: 31, title: "المشروع النهائي - الاختيار (الجزء 1)", type: "project", desc: "اختر بين: موقع مدونة بسيط (Flask)، نظام إدارة محتوى (CLI)، أداة أتمتة", icon: "fa-project-diagram", completed: false },
+                { week: 8, number: 32, title: "المشروع النهائي - الاختيار (الجزء 2)", type: "project", desc: "مواصلة العمل على المشروع النهائي", icon: "fa-project-diagram", completed: false },
+                
+                { week: 9, number: 33, title: "المشروع النهائي - الاختيار (الجزء 3)", type: "project", desc: "مواصلة العمل على المشروع النهائي", icon: "fa-project-diagram", completed: false },
+                { week: 9, number: 34, title: "المشروع النهائي - الاختيار (الجزء 4)", type: "project", desc: "مواصلة العمل على المشروع النهائي", icon: "fa-project-diagram", completed: false },
+                { week: 9, number: 35, title: "المشروع النهائي - الاختيار (الجزء 5)", type: "project", desc: "إنهاء المشروع النهائي", icon: "fa-project-diagram", completed: false },
+                { week: 9, number: 36, title: "مراجعة وتطوير المشروع النهائي (الجزء 1)", type: "review", desc: "تحسين المشروع وإضافة ميزات جديدة", icon: "fa-check-double", completed: false },
+                
+                { week: 10, number: 37, title: "مراجعة وتطوير المشروع النهائي (الجزء 2)", type: "review", desc: "تحسين المشروع وإضافة ميزات جديدة", icon: "fa-check-double", completed: false },
+                { week: 10, number: 38, title: "مراجعة وتطوير المشروع النهائي (الجزء 3)", type: "review", desc: "تحسين المشروع وإضافة ميزات جديدة", icon: "fa-check-double", completed: false },
+                { week: 10, number: 39, title: "مراجعة شاملة للمفاهيم الأساسية", type: "review", desc: "مراجعة شاملة لأهم مفاهيم Python", icon: "fa-book-open", completed: false },
+                { week: 10, number: 40, title: "مراجعة شاملة للمشاريع والتطبيقات", type: "review", desc: "مراجعة المشاريع والتطبيقات العملية", icon: "fa-laptop-code", completed: false }
+            ];
+            
+            const sessionsContainer = document.getElementById('sessions-container');
+            const progressFill = document.getElementById('progress-fill');
+            const completedCount = document.getElementById('completed-count');
+            const statsCompleted = document.getElementById('stats-completed');
+            const statsRemaining = document.getElementById('stats-remaining');
+            const searchInput = document.getElementById('search-input');
+            const typeFilter = document.getElementById('type-filter');
+            const weekFilter = document.getElementById('week-filter');
+            const statusFilter = document.getElementById('status-filter');
+            
+            let completedSessions = 0;
+            
+            // Load saved completion status from localStorage
+            function loadCompletionStatus() {
+                sessionsData.forEach(session => {
+                    const savedStatus = localStorage.getItem(`session-${session.number}-completed`);
+                    if (savedStatus === 'true') {
+                        session.completed = true;
+                        completedSessions++;
+                    }
+                });
+                updateProgress();
+            }
+            
+            // Render sessions based on filters
+            function renderSessions() {
+                sessionsContainer.innerHTML = '';
+                
+                const searchTerm = searchInput.value.toLowerCase();
+                const typeFilterValue = typeFilter.value;
+                const weekFilterValue = weekFilter.value;
+                const statusFilterValue = statusFilter.value;
+                
+                sessionsData
+                    .filter(session => {
+                        // Apply search filter
+                        if (searchTerm && 
+                            !session.title.toLowerCase().includes(searchTerm) && 
+                            !session.desc.toLowerCase().includes(searchTerm)) {
+                            return false;
+                        }
+                        
+                        // Apply type filter
+                        if (typeFilterValue !== 'all' && session.type !== typeFilterValue) {
+                            return false;
+                        }
+                        
+                        // Apply week filter
+                        if (weekFilterValue !== 'all' && session.week.toString() !== weekFilterValue) {
+                            return false;
+                        }
+                        
+                        // Apply status filter
+                        if (statusFilterValue === 'completed' && !session.completed) {
+                            return false;
+                        }
+                        if (statusFilterValue === 'incomplete' && session.completed) {
+                            return false;
+                        }
+                        
+                        return true;
+                    })
+                    .forEach(session => {
+                        const sessionCard = document.createElement('div');
+                        sessionCard.className = `session-card bg-white dark:bg-dark-200 rounded-xl shadow-sm dark:shadow-none overflow-hidden border border-gray-200 dark:border-dark-300 hover:shadow-md dark:hover:shadow-none ${session.completed ? 'border-green-200 dark:border-green-800' : ''}`;
+                        
+                        // Determine type color class
+                        let typeColorClass = '';
+                        switch(session.type) {
+                            case 'theory': typeColorClass = 'type-theory'; break;
+                            case 'practice': typeColorClass = 'type-practice'; break;
+                            case 'project': typeColorClass = 'type-project'; break;
+                            case 'review': typeColorClass = 'type-review'; break;
+                            case 'workshop': typeColorClass = 'type-workshop'; break;
+                        }
+                        
+                        sessionCard.innerHTML = `
+                            <div class="p-5">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <span class="text-xs font-medium px-2 py-1 rounded ${typeColorClass}">
+                                            ${getTypeName(session.type)}
+                                        </span>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500 dark:text-gray-400">الأسبوع ${session.week} - الحصة ${session.number}</span>
+                                </div>
+                                
+                                <h3 class="font-bold text-lg mb-2 dark:text-gray-100">${session.title}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">${session.desc}</p>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas ${session.icon} text-primary dark:text-primary-300"></i>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">${session.type === 'project' ? 'مشروع' : 'حصة'} ${session.number}</span>
+                                    </div>
+                                    
+                                    <button onclick="toggleCompletion(this, ${session.number})" class="px-3 py-1 rounded-lg text-sm font-medium ${session.completed ? 'bg-green-100 dark:bg-green-800/30 text-green-800 dark:text-green-300' : 'bg-gray-100 dark:bg-dark-300 text-gray-800 dark:text-gray-300'}">
+                                        ${session.completed ? 'مكتملة <i class="fas fa-check ml-1"></i>' : 'إكمال <i class="fas fa-plus ml-1"></i>'}
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="px-5 py-3 border-t border-gray-100 dark:border-dark-300 bg-gray-50 dark:bg-dark-300 flex items-center justify-between">
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    ${getLevel(session.number)}
+                                </div>
+                                
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    ${session.completed ? 'تم الإكمال' : 'لم تكتمل بعد'}
+                                </div>
+                            </div>
+                        `;
+                        
+                        sessionsContainer.appendChild(sessionCard);
+                    });
+            }
+            
+            // Helper function to get type name
+            function getTypeName(type) {
+                switch(type) {
+                    case 'theory': return 'حصة نظرية';
+                    case 'practice': return 'حصة تطبيقية';
+                    case 'project': return 'مشروع عملي';
+                    case 'review': return 'مراجعة شاملة';
+                    case 'workshop': return 'ورشة عمل';
+                    default: return type;
+                }
+            }
+            
+            // Helper function to get level
+            function getLevel(sessionNumber) {
+                if (sessionNumber < 9) return 'مبتدئ';
+                if (sessionNumber < 21) return 'متوسط';
+                return 'متقدم';
+            }
+            
+            // Update progress
+            function updateProgress() {
+                const percentage = (completedSessions / 40) * 100;
+                progressFill.style.width = `${percentage}%`;
+                completedCount.textContent = completedSessions;
+                statsCompleted.textContent = completedSessions;
+                statsRemaining.textContent = 40 - completedSessions;
+            }
+            
+            // Make function available globally
+            window.toggleCompletion = function(button, sessionNumber) {
+                const session = sessionsData.find(s => s.number === sessionNumber);
+                session.completed = !session.completed;
+                
+                // Save to localStorage
+                localStorage.setItem(`session-${sessionNumber}-completed`, session.completed);
+                
+                if (session.completed) {
+                    completedSessions++;
+                } else {
+                    completedSessions--;
+                }
+                
+                updateProgress();
+                renderSessions();
+                
+                // Show notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-white dark:bg-dark-200 shadow-lg rounded-lg px-4 py-2 border-l-4 border-green-500 dark:border-green-600 flex items-center gap-2 animate-fade-in';
+                notification.innerHTML = `
+                    <i class="fas ${session.completed ? 'fa-check-circle text-green-500 dark:text-green-400' : 'fa-times-circle text-red-500 dark:text-red-400'}"></i>
+                    <span class="dark:text-gray-200">تم ${session.completed ? 'إكمال' : 'إلغاء إكمال'} الحصة ${sessionNumber}</span>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('animate-fade-out');
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
+            };
+            
+            // Initialize
+            loadCompletionStatus();
+            renderSessions();
+            
+            // Add event listeners for filters
+            searchInput.addEventListener('input', renderSessions);
+            typeFilter.addEventListener('change', renderSessions);
+            weekFilter.addEventListener('change', renderSessions);
+            statusFilter.addEventListener('change', renderSessions);
+        });
+    </script>
+</body>
+</html>

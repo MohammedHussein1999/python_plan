@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+body {
+    font-family: 'Tajawal', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.session-card {
+    transition: all 0.3s ease;
+}
+.session-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e2e8f0;
+}
+.dark .progress-bar {
+    background-color: #2d3748;
+}
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    background-color: #4299e1;
+    transition: width 0.5s ease;
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.dark ::-webkit-scrollbar-track {
+    background: #2d3748;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: #4a5568;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+/* Dark mode toggle animation */
+.dark-mode-toggle {
+    transition: all 0.3s ease;
+}
+.dark-mode-toggle:hover {
+    transform: scale(1.05);
+}
+/* Animation classes */
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+.animate-fade-out {
+    animation: fadeOut 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
+}
+/* Type colors */
+.type-theory {
+    background-color: #DBEAFE;
+    color: #1D4ED8;
+}
+.dark .type-theory {
+    background-color: #1E3A8A;
+    color: #93C5FD;
+}
+.type-practice {
+    background-color: #D1FAE5;
+    color: #047857;
+}
+.dark .type-practice {
+    background-color: #064E3B;
+    color: #6EE7B7;
+}
+.type-project {
+    background-color: #EDE9FE;
+    color: #5B21B6;
+}
+.dark .type-project {
+    background-color: #5B21B6;
+    color: #C4B5FD;
+}
+.type-review {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+.dark .type-review {
+    background-color: #78350F;
+    color: #FCD34D;
+}
+.type-workshop {
+    background-color: #FCE7F3;
+    color: #BE185D;
+}
+.dark .type-workshop {
+    background-color: #831843;
+    color: #F9A8D4;
+}
+.assignment-box {
+  border: 1px solid #eab308;
+  background: rgba(251, 191, 36, 0.07);
+  color: #fde68a;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.assignment-label {
+  color: #fde047;
+  font-weight: bold;
+}
+/* لون نص الواجب في الوضع الفاتح (إذا لم يكن هناك .dark على body) */
+html:not(.dark) .assignment-box {
+  color: #222;
+}
+html:not(.dark) .assignment-label {
+  color: #b45309;
+}
